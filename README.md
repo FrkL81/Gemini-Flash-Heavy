@@ -1,136 +1,82 @@
-# 🚀 Make It heavy
+# 🚀 Gemini Multi-Agent Heavy
 
-A Python framework to emulate **Grok heavy** functionality using a powerful multi-agent system. Built on OpenRouter's API, Make It heavy delivers comprehensive, multi-perspective analysis through intelligent agent orchestration.
+A powerful multi-agent system optimized for Google AI Studio's free tier, delivering comprehensive analysis through intelligent agent orchestration. This project maximizes the potential of Gemini models by strategically utilizing multiple agents in parallel.
 
 ## 🌟 Features
 
-- **🧠 Grok heavy Emulation**: Multi-agent system that delivers deep, comprehensive analysis like Grok heavy mode
-- **🔀 Parallel Intelligence**: Deploy 4 specialized agents simultaneously for maximum insight coverage
+- **🧠 Multi-Agent Intelligence**: Deploy up to 4 specialized agents simultaneously for maximum insight coverage
+- **⚡ Smart Quota Management**: Optimized configuration to maximize Google AI Studio free tier usage
 - **🎯 Dynamic Question Generation**: AI creates custom research questions tailored to each query
-- **⚡ Real-time Orchestration**: Live visual feedback during multi-agent execution
+- **🔄 Intelligent Load Balancing**: Automatically prioritizes models with best available quotas
 - **🛠️ Hot-Swappable Tools**: Automatically discovers and loads tools from the `tools/` directory
-- **🔄 Intelligent Synthesis**: Combines multiple agent perspectives into unified, comprehensive answers
-- **🎮 Single Agent Mode**: Run individual agents for simpler tasks with full tool access
+- **🎮 Real-time Progress**: Live visual feedback during multi-agent execution
+- **📊 Usage Tracking**: Monitor API usage across all models
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.8+
-- [uv](https://github.com/astral-sh/uv) (recommended Python package manager)
-- OpenRouter API key
+- Google AI Studio API key (free tier)
 
 ### Installation
 
-1. **Clone and setup environment:**
+1. **Clone the repository:**
 ```bash
-git clone <https://github.com/Doriandarko/make-it-heavy.git>
-cd "make it heavy"
-
-# Create virtual environment with uv
-uv venv
-
-# Activate virtual environment
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+git clone <repository-url>
+cd gemini-multi-agent-heavy
 ```
 
 2. **Install dependencies:**
 ```bash
-uv pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-3. **Configure API key:**
+3. **Set up your API key:**
 ```bash
-# Edit config.yaml and replace YOUR API KEY HERE with your OpenRouter API key
+# Windows
+set GOOGLE_API_KEY=your_api_key_here
+
+# Linux/Mac
+export GOOGLE_API_KEY=your_api_key_here
 ```
 
-## 🎯 Usage
-
-### Single Agent Mode
-
-Run a single intelligent agent with full tool access:
-
+4. **Run the system:**
 ```bash
-uv run main.py
+python make_it_heavy.py
 ```
 
-**What it does:**
-- Loads a single agent with all available tools
-- Processes your query step-by-step
-- Uses tools like web search, calculator, file operations
-- Returns comprehensive response when task is complete
+## 🎯 Optimized Configuration
 
-**Example:**
-```
-User: Research the latest developments in AI and summarize them
-Agent: [Uses search tool, analyzes results, provides summary]
-```
+This system is specifically optimized for Google AI Studio's free tier limits:
 
-### Grok heavy Mode (Multi-Agent Orchestration)
+| Model | RPM Limit | Daily Limit | Optimization |
+|-------|-----------|-------------|--------------|
+| `gemini-2.0-flash-lite` | 30 | 1500 | **Primary** - Best performance |
+| `gemini-2.0-flash` | 15 | 1500 | **Secondary** - High capacity |
+| `gemini-2.5-flash-lite-preview` | 15 | 500 | **Tertiary** - Balanced |
+| `gemini-2.5-flash` | 10 | 500 | **Fallback** - When others exhausted |
 
-Emulate Grok heavy's deep analysis with 4 parallel intelligent agents:
-
-```bash
-uv run make_it_heavy.py
-```
-
-**How Make It heavy works:**
-1. **🎯 AI Question Generation**: Creates 4 specialized research questions from your query
-2. **🔀 Parallel Intelligence**: Runs 4 agents simultaneously with different analytical perspectives
-3. **⚡ Live Progress**: Shows real-time agent status with visual progress bars
-4. **🔄 Intelligent Synthesis**: Combines all perspectives into one comprehensive Grok heavy-style answer
-
-**Example Flow:**
-```
-User Query: "Who is Pietro Schirano?"
-
-AI Generated Questions:
-- Agent 1: "Research Pietro Schirano's professional background and career history"
-- Agent 2: "Analyze Pietro Schirano's achievements and contributions to technology"  
-- Agent 3: "Find alternative perspectives on Pietro Schirano's work and impact"
-- Agent 4: "Verify and cross-check information about Pietro Schirano's current role"
-
-Result: Grok heavy-style comprehensive analysis combining all agent perspectives
-```
-
-## 🏗️ Architecture
-
-### Orchestration Flow
-
-```mermaid
-graph TD
-    A[User Input] --> B[Question Generation Agent]
-    B --> C[Generate 4 Specialized Questions]
-    C --> D[Parallel Agent Execution]
-    D --> E[Agent 1: Research]
-    D --> F[Agent 2: Analysis] 
-    D --> G[Agent 3: Alternatives]
-    D --> H[Agent 4: Verification]
-    E --> I[Synthesis Agent]
-    F --> I
-    G --> I
-    H --> I
-    I --> J[Comprehensive Final Answer]
-```
+## 🛠️ Architecture
 
 ### Core Components
 
-#### 1. Agent System (`agent.py`)
-- **Self-contained**: Complete agent implementation with tool access
-- **Agentic Loop**: Continues working until task completion
-- **Tool Integration**: Automatic tool discovery and execution
-- **Configurable**: Uses `config.yaml` for all settings
+#### 1. Multi-Agent Orchestrator (`orchestrator.py`)
+- **Dynamic Question Generation**: AI creates specialized questions for each agent
+- **Parallel Execution**: Runs multiple agents simultaneously with quota awareness
+- **Response Synthesis**: Combines all agent outputs into comprehensive results
+- **Error Handling**: Graceful fallbacks when quotas are exceeded
 
-#### 2. Orchestrator (`orchestrator.py`)
-- **Dynamic Question Generation**: AI creates specialized questions
-- **Parallel Execution**: Runs multiple agents simultaneously  
-- **Response Synthesis**: AI combines all agent outputs
-- **Error Handling**: Graceful fallbacks and error recovery
+#### 2. Intelligent Agent (`agent.py`)
+- **Rate Limiting**: Respects Google AI Studio quotas automatically
+- **Tool Integration**: Access to web search, file operations, and calculations
+- **Spanish Language Support**: Optimized for Spanish language analysis
+- **Usage Tracking**: Monitors API consumption across all models
 
 #### 3. Tool System (`tools/`)
 - **Auto-Discovery**: Automatically loads all tools from directory
-- **Hot-Swappable**: Add new tools by dropping files in `tools/`
 - **Standardized Interface**: All tools inherit from `BaseTool`
+- **Extensible**: Add new tools by dropping files in `tools/`
 
 ### Available Tools
 
@@ -142,214 +88,117 @@ graph TD
 | `write_file` | Create/overwrite files | `path`, `content` |
 | `mark_task_complete` | Signal task completion | `task_summary`, `completion_message` |
 
+## 📊 Usage Examples
+
+### Basic Usage
+```bash
+python make_it_heavy.py
+```
+
+### Example Queries
+- "Analyze the latest developments in artificial intelligence"
+- "Research sustainable energy solutions for urban environments"
+- "Compare different machine learning frameworks"
+
 ## ⚙️ Configuration
 
-Edit `config.yaml` to customize behavior:
+The system automatically optimizes for free tier usage, but you can customize:
 
+### Model Priority
+Edit `config.yaml` to adjust model priorities:
 ```yaml
-# OpenRouter API settings
-openrouter:
-  api_key: "YOUR KEY"
-  base_url: "https://openrouter.ai/api/v1"
-  model: "openai/gpt-4.1-mini"  # Change model here
-
-# Agent settings
-agent:
-  max_iterations: 10
-
-# Orchestrator settings
-orchestrator:
-  parallel_agents: 4  # Number of parallel agents
-  task_timeout: 300   # Timeout per agent (seconds)
-  
-  # Dynamic question generation prompt
-  question_generation_prompt: |
-    You are an orchestrator that needs to create {num_agents} different questions...
-    
-  # Response synthesis prompt  
-  synthesis_prompt: |
-    You have {num_responses} different AI agents that analyzed the same query...
-
-# Tool settings
-search:
-  max_results: 5
-  user_agent: "Mozilla/5.0 (compatible; OpenRouter Agent)"
+worker_models:
+  - "gemini-2.0-flash-lite"    # Highest priority
+  - "gemini-2.0-flash"         # Second priority
+  - "gemini-2.5-flash-lite-preview-06-17"
+  - "gemini-2.5-flash"         # Fallback
 ```
 
-## 🔧 Development
-
-### Adding New Tools
-
-1. Create a new file in `tools/` directory
-2. Inherit from `BaseTool`
-3. Implement required methods:
-
-```python
-from .base_tool import BaseTool
-
-class MyCustomTool(BaseTool):
-    @property
-    def name(self) -> str:
-        return "my_tool"
-    
-    @property
-    def description(self) -> str:
-        return "Description of what this tool does"
-    
-    @property
-    def parameters(self) -> dict:
-        return {
-            "type": "object",
-            "properties": {
-                "param": {"type": "string", "description": "Parameter description"}
-            },
-            "required": ["param"]
-        }
-    
-    def execute(self, param: str) -> dict:
-        # Tool implementation
-        return {"result": "success"}
-```
-
-4. The tool will be automatically discovered and loaded!
-
-### Customizing Models
-
-Supports any OpenRouter-compatible model:
-
+### Rate Limiting
+Adjust rate limits based on your usage patterns:
 ```yaml
-openrouter:
-  model: "anthropic/claude-3.5-sonnet"     # For complex reasoning
-  model: "openai/gpt-4.1-mini"             # For cost efficiency  
-  model: "google/gemini-2.0-flash-001"     # For speed
-  model: "meta-llama/llama-3.1-70b"        # For open source
+rate_limits:
+  "gemini-2.0-flash-lite":
+    rpm: 25      # Conservative limit
+    daily: 1400  # Daily safety margin
+    delay: 2.5   # Seconds between requests
 ```
 
-### Adjusting Agent Count
-
-Change number of parallel agents:
-
-```yaml
-orchestrator:
-  parallel_agents: 6  # Run 6 agents instead of 4
-```
-
-**Note**: Make sure your OpenRouter plan supports the concurrent usage!
-
-## 🎮 Examples
-
-### Research Query
-```bash
-User: "Analyze the impact of AI on software development in 2024"
-
-Single Agent: Comprehensive research report
-Grok heavy Mode: 4 specialized perspectives combined into deep, multi-faceted analysis
-```
-
-### Technical Question  
-```bash
-User: "How do I optimize a React application for performance?"
-
-Single Agent: Step-by-step optimization guide
-Grok heavy Mode: Research + Analysis + Alternatives + Verification = Complete expert guide
-```
-
-### Creative Task
-```bash
-User: "Create a business plan for an AI startup"
-
-Single Agent: Structured business plan
-Grok heavy Mode: Market research + Financial analysis + Competitive landscape + Risk assessment
-```
-
-## 🛠️ Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
-**API Key Error:**
+#### Quota Exceeded (429 Error)
 ```
-Error: Invalid API key
-Solution: Update config.yaml with valid OpenRouter API key
+429 You exceeded your current quota
 ```
+**Solution**: Wait for quota reset or switch to different models
 
-**Tool Import Error:**
+#### API Key Issues
 ```
-Error: Could not load tool from filename.py
-Solution: Check tool inherits from BaseTool and implements required methods
+TypeError: 'NoneType' object is not subscriptable
 ```
+**Solution**: Ensure `GOOGLE_API_KEY` environment variable is set
 
-**Synthesis Failure:**
+#### Model Unavailable
 ```
-🚨 SYNTHESIS FAILED: [error message]
-Solution: Check model compatibility and API limits
+Invalid model error
 ```
+**Solution**: Check Google AI Studio for model availability
 
-**Timeout Issues:**
-```
-Agent timeout errors
-Solution: Increase task_timeout in config.yaml
-```
+## 📈 Performance Optimization
 
-### Debug Mode
+### Free Tier Maximization
+- **Model Rotation**: Automatically switches between models when quotas are reached
+- **Smart Delays**: Optimized timing between requests to avoid rate limits
+- **Parallel Processing**: Uses multiple models simultaneously for faster results
+- **Usage Tracking**: Monitors consumption to prevent unexpected quota exhaustion
 
-For detailed debugging, modify orchestrator to show synthesis process:
-
-```python
-# In orchestrator.py
-synthesis_agent = OpenRouterAgent(silent=False)  # Enable debug output
-```
-
-## 📁 Project Structure
-
-```
-make it heavy/
-├── main.py                 # Single agent CLI
-├── make_it_heavy.py         # Multi-agent orchestrator CLI  
-├── agent.py                # Core agent implementation
-├── orchestrator.py         # Multi-agent orchestration logic
-├── config.yaml             # Configuration file
-├── requirements.txt        # Python dependencies
-├── README.md               # This file
-└── tools/                  # Tool system
-    ├── __init__.py         # Auto-discovery system
-    ├── base_tool.py        # Tool base class
-    ├── search_tool.py      # Web search
-    ├── calculator_tool.py  # Math calculations  
-    ├── read_file_tool.py   # File reading
-    ├── write_file_tool.py  # File writing
-    └── task_done_tool.py   # Task completion
-```
+### Best Practices
+1. **Monitor Usage**: Check the usage summary after each run
+2. **Spread Workload**: Use different models throughout the day
+3. **Batch Queries**: Group related questions for efficiency
+4. **Cache Results**: Save important outputs to avoid re-processing
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Add new tools or improve existing functionality
-4. Test with both single and multi-agent modes
-5. Submit a pull request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📝 License
+### Development Setup
+```bash
+git clone <repository-url>
+cd gemini-multi-agent-heavy
+pip install -r requirements.txt
+```
 
-MIT License with Commercial Attribution Requirement
+### Adding New Tools
+1. Create a new file in `tools/` directory
+2. Inherit from `BaseTool`
+3. Implement required methods
+4. The system will auto-discover your tool
 
-**For products with 100K+ users**: Please include attribution to Pietro Schirano and mention the "Make It heavy" framework in your documentation or credits.
+## 📄 License
 
-See [LICENSE](LICENSE) file for full details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [OpenRouter](https://openrouter.ai/) for LLM API access
-- Uses [uv](https://github.com/astral-sh/uv) for Python package management
-- Inspired by **Grok heavy** mode and advanced multi-agent AI systems
+This project is inspired by and builds upon the original [Make It Heavy](https://github.com/Doriandarko/make-it-heavy) by [@Doriandarko](https://github.com/Doriandarko). 
+
+**Key Adaptations:**
+- Optimized for Google AI Studio instead of OpenRouter
+- Enhanced quota management for free tier usage
+- Improved multi-agent coordination
+- Spanish language optimization
+- Real-time progress monitoring
+
+Special thanks to the original author for the foundational architecture and inspiration.
+
+## 🔗 Related Projects
+
+- [Original Make It Heavy](https://github.com/Doriandarko/make-it-heavy) - OpenRouter-based multi-agent system
+- [Google AI Studio](https://ai.google.dev/aistudio) - Free access to Gemini models
 
 ---
 
-**Ready to make it heavy?** 🚀
-
-```bash
-uv run make_it_heavy.py
-```
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Doriandarko/make-it-heavy&type=Date)](https://www.star-history.com/#Doriandarko/make-it-heavy&Date)
+**Made with ❤️ for the AI community**

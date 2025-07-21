@@ -1,0 +1,38 @@
+GEMINI-2.0-FLASH HEAVY
+● RUNNING • 10M37S
+
+AGENT 01  ● ::::::::::····························································
+AGENT 02  ● ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Error in iteration 3: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count"
+  quota_id: "GenerateContentInputTokensPerModelPerMinute-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 250000
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+}
+]
+Final result length: 100914
+Full response content items: 29
+Agent 0 completed successfully in 634.22s
+
+================================================================================
+📊 RESUMEN DE USO DE MODELOS - CAPA GRATUITA
+================================================================================
+
+🤖 gemini-2.0-flash
+
+Error during orchestration: 'minute_limit'
+Task failed. Please try again.

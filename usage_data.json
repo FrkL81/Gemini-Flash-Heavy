@@ -1,0 +1,47 @@
+{
+  "models": {
+    "gemini-2.5-flash": {
+      "requests": [
+        {
+          "timestamp": "2025-07-20T22:44:11.942036",
+          "type": "generate"
+        },
+        {
+          "timestamp": "2025-07-20T23:31:25.441760",
+          "type": "generate"
+        },
+        {
+          "timestamp": "2025-07-20T23:32:48.715928",
+          "type": "generate"
+        },
+        {
+          "timestamp": "2025-07-20T23:41:58.867804",
+          "type": "generate"
+        }
+      ],
+      "daily_count": 4,
+      "minute_count": 1,
+      "last_request": "2025-07-20T23:41:58.867804"
+    },
+    "gemini-2.0-flash-lite": {
+      "requests": [
+        {
+          "timestamp": "2025-07-20T22:44:22.870915",
+          "type": "generate"
+        },
+        {
+          "timestamp": "2025-07-20T22:57:01.849875",
+          "type": "generate"
+        },
+        {
+          "timestamp": "2025-07-20T23:31:21.963823",
+          "type": "generate"
+        }
+      ],
+      "daily_count": 3,
+      "minute_count": 1,
+      "last_request": "2025-07-20T23:31:21.963823"
+    }
+  },
+  "last_reset": "2025-07-20T22:44:11.729108"
+}

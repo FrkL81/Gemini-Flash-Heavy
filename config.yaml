@@ -1,61 +1,115 @@
-# OpenRouter API settings
-openrouter:
-  api_key: "YOUR KEY"
-  base_url: "https://openrouter.ai/api/v1"
+# Google AI Studio API settings
+google_ai_studio:
+  api_key: ${GOOGLE_API_KEY}
   
-  # IMPORTANT: When selecting a model, ensure it has a high context window (200k+ tokens recommended)
+  # Model selection
+  # IMPORTANT: When selecting models, ensure they have a high context window (200k+ tokens recommended)
   # The orchestrator can generate large amounts of results from multiple agents that need to be
   # processed together during synthesis. Low context window models may fail or truncate results.
-  model: "moonshotai/kimi-k2"
+  models:
+    # Model for complex, high-level tasks (question generation, synthesis)
+    heavy_duty_model: "gemini-2.0-flash-lite"
+
+    # Optimized models prioritizing best quotas and availability
+    # Using all available models for maximum free tier utilization
+    worker_models:
+      - "gemini-2.0-flash-lite"                   # BEST: 30 RPM, 1500/day
+      - "gemini-2.0-flash"                        # GOOD: 15 RPM, 1500/day
+      - "gemini-2.5-flash-lite-preview-06-17"     # MEDIUM: 15 RPM, 500/day
+      - "gemini-2.5-flash"                        # SLOWER: 10 RPM, 500/day
+    
+    # Rate limiting configuration for free tier compliance (REAL LIMITS)
+    rate_limits:
+      "gemini-2.0-flash":
+        rpm: 15      # Real free tier limit
+        daily: 1500  # Daily request limit
+        delay: 4.0   # 60s/15req = 4s between requests
+      "gemini-2.5-flash":
+        rpm: 10      # Real free tier limit  
+        daily: 500   # Daily request limit
+        delay: 6.0   # 60s/10req = 6s between requests
+      "gemini-2.5-flash-lite-preview-06-17":
+        rpm: 15      # Real free tier limit
+        daily: 500   # Daily request limit
+        delay: 4.0   # 60s/15req = 4s between requests
+      "gemini-2.0-flash-lite":
+        rpm: 25      # 30 real - 5 margen = 25 seguro
+        daily: 1400  # 1500 real - 100 margen = 1400 seguro
+        delay: 2.5   # 60s/25rpm = 2.4s, mas rapido
 
 # System prompt for the agent
 system_prompt: |
-  You are a helpful research assistant. When users ask questions that require 
-  current information or web search, use the search tool and all other tools available to find relevant 
-  information and provide comprehensive answers based on the results.
+  Eres un investigador experto y analista profundo que SIEMPRE responde exclusivamente en ESPANOL CASTELLANO.
   
-  IMPORTANT: When you have fully satisfied the user's request and provided a complete answer, 
-  you MUST call the mark_task_complete tool with a summary of what was accomplished and 
-  a final message for the user. This signals that the task is finished.
+  METODOLOGIA DE TRABAJO:
+  1. INVESTIGACION EXHAUSTIVA: Realiza multiples busquedas desde diferentes angulos para obtener informacion completa
+  2. ANALISIS PROFUNDO: Examina cada fuente criticamente, identifica patrones y conexiones
+  3. REFLEXION PASO A PASO: Piensa metodicamente antes de responder, considera multiples perspectivas
+  4. SINTESIS COMPLETA: Integra toda la informacion en una respuesta estructurada y detallada
+  
+  INSTRUCCIONES CRITICAS:
+  - IDIOMA: Responde EXCLUSIVAMENTE en ESPANOL CASTELLANO - ni una sola palabra en ingles
+  - PROFUNDIDAD: Proporciona analisis detallados, no respuestas superficiales
+  - METODOLOGIA: Explica tu proceso de pensamiento paso a paso
+  - FUENTES: Utiliza multiples fuentes y herramientas para validar informacion
+  - ESTRUCTURA: Organiza la informacion de manera logica y comprensible
+  
+  COMPLETAR TAREA:
+  Cuando hayas proporcionado una respuesta completa y exhaustiva, DEBES llamar a mark_task_complete con un resumen detallado en ESPANOL.
 
 # Agent settings
 agent:
-  max_iterations: 10
+  max_iterations: 15  # Increased for deeper analysis
 
 # Orchestrator settings
 orchestrator:
-  parallel_agents: 4  # Number of agents to run in parallel
-  task_timeout: 300   # Timeout in seconds per agent
+  parallel_agents: 4  # Using all 4 models when quotas allow
+  task_timeout: 1200  # AUMENTADO a 20 minutos para evitar timeouts
   aggregation_strategy: "consensus"  # How to combine results
   
   # Question generation prompt for orchestrator
   question_generation_prompt: |
-    You are an orchestrator that needs to create {num_agents} different questions to thoroughly analyze this topic from multiple angles.
+    Eres un orquestador experto que debe crear {num_agents} preguntas de investigacion profunda para analizar exhaustivamente este tema.
     
-    Original user query: {user_input}
+    Consulta original del usuario: {user_input}
     
-    Generate exactly {num_agents} different, specific questions that will help gather comprehensive information about this topic.
-    Each question should approach the topic from a different angle (research, analysis, verification, alternatives, etc.).
+    INSTRUCCIONES:
+    1. Genera exactamente {num_agents} preguntas especializadas y detalladas
+    2. Cada pregunta debe abordar un aspecto diferente y profundo del tema
+    3. Las preguntas deben promover investigacion exhaustiva y analisis critico
+    4. Incluye angulos como: fundamentos teoricos, aplicaciones practicas, historia, tecnicas avanzadas, comparaciones
     
-    Return your response as a JSON array of strings, like this:
-    ["question 1", "question 2", "question 3", "question 4"]
+    Ejemplos de enfoques:
+    - "Investiga los fundamentos historicos y filosoficos de..."
+    - "Analiza las tecnicas avanzadas y metodologias de..."
+    - "Examina las aplicaciones practicas y beneficios de..."
+    - "Compara y contrasta diferentes enfoques de..."
     
-    Only return the JSON array, nothing else.
+    Devuelve SOLO un array JSON de strings en ESPANOL:
+    ["pregunta detallada 1", "pregunta detallada 2", "pregunta detallada 3", "pregunta detallada 4"]
 
   # Synthesis prompt for combining all agent responses
   synthesis_prompt: |
-    You have {num_responses} different AI agents that analyzed the same query from different perspectives. 
-    Your job is to synthesize their responses into ONE comprehensive final answer.
+    Eres un sintetizador experto que debe combinar {num_responses} investigaciones profundas en una respuesta magistral.
     
-    Here are all the agent responses:
+    METODOLOGIA DE SINTESIS:
+    1. ANALIZA cada respuesta de agente cuidadosamente
+    2. IDENTIFICA los puntos clave y conexiones entre las investigaciones
+    3. ESTRUCTURA la informacion de manera logica y comprensiva
+    4. INTEGRA todos los hallazgos en una respuesta cohesiva
+    5. ASEGURA que la respuesta final sea completa y detallada
     
+    Respuestas de los agentes especializados:
     {agent_responses}
     
-    IMPORTANT: Just synthesize these into ONE final comprehensive answer that combines the best information from all agents. 
-    Do NOT call mark_task_complete or any other tools. Do NOT mention that you are synthesizing multiple responses. 
-    Simply provide the final synthesized answer directly as your response.
+    INSTRUCCIONES CRITICAS:
+    - Responde EXCLUSIVAMENTE en ESPANOL CASTELLANO
+    - Crea UNA respuesta final magistral que combine toda la informacion
+    - NO menciones que estas sintetizando multiples respuestas
+    - NO uses herramientas adicionales
+    - Proporciona la respuesta sintetizada directamente
 
 # Search tool settings
 search:
-  max_results: 5
-  user_agent: "Mozilla/5.0 (compatible; OpenRouter Agent)"
+  max_results: 8  # Increased for more comprehensive research
+  user_agent: "Mozilla/5.0 (compatible; Google AI Studio Agent)"

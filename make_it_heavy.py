@@ -9,9 +9,8 @@ class OrchestratorCLI:
         self.start_time = None
         self.running = False
         
-        # Extract model name for display
-        model_full = self.orchestrator.config['openrouter']['model']
-        # Extract model name (e.g., "google/gemini-2.5-flash-preview-05-20" -> "GEMINI-2.5-FLASH")
+        # Extract heavy-duty model name for display
+        model_full = self.orchestrator.heavy_duty_model
         if '/' in model_full:
             model_name = model_full.split('/')[-1]
         else:
@@ -19,7 +18,6 @@ class OrchestratorCLI:
         
         # Clean up model name for display
         model_parts = model_name.split('-')
-        # Take first 3 parts for cleaner display (e.g., gemini-2.5-flash)
         clean_name = '-'.join(model_parts[:3]) if len(model_parts) >= 3 else model_name
         self.model_display = clean_name.upper() + " HEAVY"
         
@@ -145,15 +143,15 @@ class OrchestratorCLI:
         print("-" * 50)
         
         try:
-            orchestrator_config = self.orchestrator.config['openrouter']
-            print(f"Using model: {orchestrator_config['model']}")
+            print(f"Heavy-duty model: {self.orchestrator.heavy_duty_model}")
+            print(f"Worker models: {len(self.orchestrator.worker_models)} available")
             print("Orchestrator initialized successfully!")
-            print("Note: Make sure to set your OpenRouter API key in config.yaml")
+            print("Note: Make sure to set your Google AI Studio API key as the GOOGLE_API_KEY environment variable.")
             print("-" * 50)
         except Exception as e:
             print(f"Error initializing orchestrator: {e}")
             print("Make sure you have:")
-            print("1. Set your OpenRouter API key in config.yaml")
+            print("1. Set your Google AI Studio API key as the GOOGLE_API_KEY environment variable")
             print("2. Installed all dependencies with: pip install -r requirements.txt")
             return
         
